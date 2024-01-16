@@ -1,0 +1,147 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Getting Started with Chart JS with www.chartjs3.com</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+      }
+      .chartMenu {
+        width: 100vw;
+        height: 40px;
+        background: #1A1A1A;
+        color: rgba(54, 162, 235, 1);
+      }
+      .chartMenu p {
+        padding: 10px;
+        font-size: 20px;
+      }
+      .chartCard {
+        width: 100vw;
+        height: calc(100vh - 40px);
+        background: rgba(54, 162, 235, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .chartBox {
+        width: 700px;
+        padding: 20px;
+        border-radius: 20px;
+        border: solid 3px rgba(54, 162, 235, 1);
+        background: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chartMenu">
+      <p>WWW.CHARTJS3.COM (Chart JS <span id="chartVersion"></span>)</p>
+    </div>
+    <div class="input-list">
+        <h1>Tetsing</h1>
+        <input type="date" id="startdate"/>
+    </div>
+    <div class="chartCard">
+      <div class="chartBox">
+        <canvas id="myChart"></canvas>
+      </div>
+    </div>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script>
+    // setup 
+    const data = {
+        datasets :[
+        {
+          label: 'Story 1',
+          data: [
+            { x: '2023-02-01', y: 20 },
+            { x: '2023-02-05', y: 40 },
+            { x: '2023-02-10', y: 60 },
+            { x: '2023-02-15', y: 70 },
+            { x: '2023-02-20', y: 80 },
+            { x: '2023-02-25', y: 100 },
+          ],
+        },
+        {
+          label: 'Story 2',
+          data: [
+            { x: '2023-02-03', y: 10 },
+            { x: '2023-02-08', y: 30 },
+            { x: '2023-02-13', y: 50 },
+            { x: '2023-02-23', y: 50 },
+          ],
+        },
+        {
+          label: 'Story 3',
+          data: [
+            { x: '2023-02-02', y: 10 },
+            { x: '2023-02-07', y: 20 },
+            { x: '2023-02-12', y: 35 },
+            { x: '2023-02-17', y: 49 },
+            { x: '2023-02-22', y: 60 },
+            { x: '2023-02-27', y: 70 },
+          ],
+        },
+      ]
+    };
+
+    // config 
+    const config = {
+      type: 'line',
+      data,
+      options: {
+        scales: {
+          x:{
+            type:'time',
+            time: {
+                unit:'day'
+            },
+            min : '2023-01-28',
+            max : '2023-03-01'
+          },
+          y: {
+            beginAtZero: true,
+            title: {
+                display: true, // Show y-axis title
+                text: 'Your Y-Axis Label'
+              }
+          }
+        }
+      }
+    };
+    const labelMap = {
+        25: 'Development',
+        50: 'Testing',
+        75: 'Review',
+        100: 'Done'
+      };
+    // render init block
+    const myChart = new Chart(
+      document.getElementById('myChart'),
+      config
+    );
+    const yAxis = myChart.scales.y;
+    yAxis.options.ticks.stepSize = 25;
+    yAxis.options.ticks.callback = (value) => {
+        if (labelMap[value]) {
+          return labelMap[value]; // Return string label if defined
+        } else {
+          return ''; // Return an empty string for other values
+        }
+      };
+    
+    myChart.update();
+
+    // Instantly assign Chart.js version
+    const chartVersion = document.getElementById('chartVersion');
+    chartVersion.innerText = Chart.version;
+    </script>
+    <script src="minute.js"></script>
+  </body>
+</html>
